@@ -1,11 +1,28 @@
-// https://github.com/zenxds/byte-tool/blob/master/index.js
+/*
+ 字节操作
+ Thanks：https://github.com/zenxds/byte-tool/blob/master/index.js
+ */
 
 /**
- * & 保证右移后的结果范围，也就是bytes控制范围
- * bits控制移动位数
+ * [move description] 将数字右移
+ * @param v {String}   原数字
+ * @param bits {Number}  移动位数
+ * @param bytes {Number}  控制右移之后的结果范围
+ * @return {Number}  返回右移结果
  */
-var move = function(v, bits, bytes) {
-    return (v >> bits) & (Math.pow(2, (typeof bytes == 'undefined' ? 1 : bytes) * 8) - 1)
+
+function move(v, bits, bytes){
+  return (v >> bits) & (Math.pow(2, (typeof bytes === 'undefined' ? 1 : bytes) * 8) - 1);
+}
+
+/**
+ * [bs2 description] 通过字节操作将数字转换成2进制
+ * @param v {String}   原数字
+ * @return {Number}  转换后的二进制数字
+ */
+
+function move(v, bits, bytes){
+  return (v >> bits) & (Math.pow(2, (typeof bytes === 'undefined' ? 1 : bytes) * 8) - 1);
 }
 
 /**

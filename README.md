@@ -21,7 +21,8 @@
 |    others     |    其他（未分类）   | [others.js](http://github.com/merrier/common-js/blob/master/code/others.js)               | [others.js.html](http://merrier.github.io/common-js/others.js.html)               |
 
 ## 感谢
-以上这些方法并不属于我的个人创作，只是对其他人的代码进行的总结，再次特别感谢那些"大牛"，是他们的智慧让前端的轮子越来越多！
+以上这些方法并不属于我的个人创作，只是对其他人的代码进行的总结，再次特别感谢那些"大牛"，是他们的智慧让前端的轮子越来越多！（排名不分前后）
 
 * [JS前端开发联盟群](https://github.com/jsfront/src/blob/master/js.md)
 * [Coco](https://github.com/chokcoco)
+* [xjinjin](http://xjinjin.net/)

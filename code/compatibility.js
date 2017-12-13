@@ -51,3 +51,63 @@ function pseudoHack(dom) {
   dom.appendChild(after);
 }
 
+
+/**
+ * [webpAnimataionSupportDetect description] 检测对webp的支持，来自：https://developers.google.com/speed/webp/faq
+ * 原理:
+ * 预先生成好webp格式的图片, 保存经过base64编码后的结果
+ * 生成相应的img标签, 将src设置为相应的base64地址
+ * 如果img标签能够成功加载(加载后的图片有宽和高), 则说明支持相应的webp格式
+ * 参数中的feature需要设置为'animation'
+ * @param feature {String} [lossy|lossless|alpha|animation]
+ * @param {Function} callback
+ * @return {Object}  返回callback结果
+ */
+function webpAnimataionSupportDetect (feature, callback) {
+  var kTestImages = {
+    lossy: 'UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA',
+    lossless: 'UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==',
+    alpha: 'UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==',
+    animation: 'UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA'
+  };
+  var img = new Image();
+  img.onload = function () {
+    var result = img.width > 0 && img.height > 0;
+    callback(result);
+  };
+  img.onerror = function () {
+    callback(false);
+  };
+  img.src = 'data:image/webp;base64,' + kTestImages[feature];
+}
+
+/**
+ * [localStorageTest description] localStorage支持度检测
+ * @return {Boolean}  返回检测结果
+ */
+function localStorageTest() {
+  var mod = 'test';
+  try {
+    localStorage.setItem(mod, mod);
+    localStorage.removeItem(mod);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+
+/**
+ * [sessionStorageTest description] sessionStorage支持度检测
+ * @return {Boolean}  返回检测结果
+ */
+function sessionStorageTest() {
+  var mod = 'test';
+  try {
+    sessionStorage.setItem(mod, mod);
+    sessionStorage.removeItem(mod);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}

@@ -122,3 +122,18 @@ function digitUppercase(n) {
       .replace(/(零.)+/g, '零')
       .replace(/^整$/, '零元整');
 }
+
+
+/**
+ * [formatDuration description] 时间转换，多用于视频播放时的剩余时间显示
+ * @param t {Number/String}  视频的秒数
+ * @return {String}  转换后的时间，例如：'389:03','00:05'
+ */
+function formatDuration (t) {
+  if (!t) { return ''; }
+  var m = Math.floor(t / 60);
+  var s = t % 60;
+  if (m < 10) { m = '0' + m; }
+  if (s < 10) { s = '0' + s; }
+  return m + ':' + s;
+}

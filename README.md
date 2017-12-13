@@ -20,6 +20,8 @@
 |    style      |    样式相关        | [style.js](http://github.com/merrier/common-js/blob/master/code/style.js)                 | [style.js.html](http://merrier.github.io/common-js/style.js.html)                 |
 |    others     |    其他（未分类）   | [others.js](http://github.com/merrier/common-js/blob/master/code/others.js)               | [others.js.html](http://merrier.github.io/common-js/others.js.html)               |
 
+为了让更多的人用到，代码全部采用ES5规范书写
+
 ## 感谢
 以上这些方法并不属于我的个人创作，只是对其他人的代码进行的总结，再次特别感谢那些"大牛"，是他们的智慧让前端的轮子越来越多！（排名不分前后）
 

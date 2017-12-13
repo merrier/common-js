@@ -60,13 +60,59 @@ function formatDate (date, fmt) {
 
 
 /**
- * [genTimeStamp description] 生成一个随机数时间戳，感谢：Coco
+ * [genTimeStamp description] 生成一个随机数时间戳，来自：Coco
  * @return {String}  随机数时间戳
  */
 function genTimeStamp() {
   var a = Math.random,
       b = parseInt;
   return Number(new Date()).toString() + b(10 * a()) + b(10 * a()) + b(10 * a());
+}
+
+
+/**
+ * [timeAgo description] 时间转换，转换为'几分钟前'、'几个月前'、'几天前'这种，来自：http://caibaojian.com/timestamp.html
+ * @param agoTimeStamp {Number}  之前的时间戳
+ * @param nowTimeStamp {Number}  当前时间戳，默认为new Date().getTime()
+ * @return {String}  返回一个转换后的字符串
+ */
+function timeAgo(agoTimeStamp, nowTimeStamp){
+  var now = new Date().getTime() || nowTimeStamp;
+  var minute = 1000 * 60;
+  var hour = minute * 60;
+  var day = hour * 24;
+  var month = day * 30;
+  var diffValue = now - agoTimeStamp;
+
+  if(diffValue &lt; 0){
+    return false;
+  }
+
+  var monthC =diffValue/month;
+  var weekC =diffValue/(7*day);
+  var dayC =diffValue/day;
+  var hourC =diffValue/hour;
+  var minC =diffValue/minute;
+  var result = '';
+
+  if(monthC>=1){
+    result="" + parseInt(monthC) + "个月前";
+  }
+  else if(weekC>=1){
+    result="" + parseInt(weekC) + "周前";
+  }
+  else if(dayC>=1){
+    result=""+ parseInt(dayC) +"天前";
+  }
+  else if(hourC>=1){
+    result=""+ parseInt(hourC) +"小时前";
+  }
+  else if(minC>=1){
+    result=""+ parseInt(minC) +"分钟前";
+  }else{
+    result="刚刚";
+  }
+  return result;
 }</code></pre>
         </article>
     </section>
@@ -77,13 +123,13 @@ function genTimeStamp() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addQuote">addQuote</a></li><li><a href="global.html#addStyle">addStyle</a></li><li><a href="global.html#bs2">bs2</a></li><li><a href="global.html#bs4">bs4</a></li><li><a href="global.html#bs8">bs8</a></li><li><a href="global.html#byteCount">byteCount</a></li><li><a href="global.html#copyTextToClipboard">copyTextToClipboard</a></li><li><a href="global.html#cssTest">cssTest</a></li><li><a href="global.html#digitUppercase">digitUppercase</a></li><li><a href="global.html#escapeHTML">escapeHTML</a></li><li><a href="global.html#escapeRegExp">escapeRegExp</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#genRandomColor">genRandomColor</a></li><li><a href="global.html#genRandomString">genRandomString</a></li><li><a href="global.html#genTimeStamp">genTimeStamp</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getCurrentPath">getCurrentPath</a></li><li><a href="global.html#getInputIndex">getInputIndex</a></li><li><a href="global.html#getJsDir">getJsDir</a></li><li><a href="global.html#getLocation">getLocation</a></li><li><a href="global.html#getPageHeight">getPageHeight</a></li><li><a href="global.html#getPageViewWidth">getPageViewWidth</a></li><li><a href="global.html#getPageWidth">getPageWidth</a></li><li><a href="global.html#getRequestParams">getRequestParams</a></li><li><a href="global.html#getStringLength">getStringLength</a></li><li><a href="global.html#getType">getType</a></li><li><a href="global.html#getUrlState">getUrlState</a></li><li><a href="global.html#hexMd5">hexMd5</a></li><li><a href="global.html#hexToRgba">hexToRgba</a></li><li><a href="global.html#initRequestAnimationFrame">initRequestAnimationFrame</a></li><li><a href="global.html#isContains">isContains</a></li><li><a href="global.html#isDigit">isDigit</a></li><li><a href="global.html#isEndsWith">isEndsWith</a></li><li><a href="global.html#isStartsWith">isStartsWith</a></li><li><a href="global.html#loadScript">loadScript</a></li><li><a href="global.html#loadStyle">loadStyle</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#numberUpperFormat">numberUpperFormat</a></li><li><a href="global.html#numOfComma">numOfComma</a></li><li><a href="global.html#pad">pad</a></li><li><a href="global.html#pseudoHack">pseudoHack</a></li><li><a href="global.html#regularExpressionTest">regularExpressionTest</a></li><li><a href="global.html#remInit">remInit</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#replaceAll">replaceAll</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#stripHTMLTags">stripHTMLTags</a></li><li><a href="global.html#stripScripts">stripScripts</a></li><li><a href="global.html#toAscii">toAscii</a></li><li><a href="global.html#toHump">toHump</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#truncate">truncate</a></li><li><a href="global.html#ucfirst">ucfirst</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addQuote">addQuote</a></li><li><a href="global.html#addStyle">addStyle</a></li><li><a href="global.html#appendQuery">appendQuery</a></li><li><a href="global.html#bs2">bs2</a></li><li><a href="global.html#bs4">bs4</a></li><li><a href="global.html#bs8">bs8</a></li><li><a href="global.html#byteCount">byteCount</a></li><li><a href="global.html#cloneDeep">cloneDeep</a></li><li><a href="global.html#copyTextToClipboard">copyTextToClipboard</a></li><li><a href="global.html#cssTest">cssTest</a></li><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#digitUppercase">digitUppercase</a></li><li><a href="global.html#escapeHTML">escapeHTML</a></li><li><a href="global.html#escapeRegExp">escapeRegExp</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDuration">formatDuration</a></li><li><a href="global.html#genRandomColor">genRandomColor</a></li><li><a href="global.html#genRandomString">genRandomString</a></li><li><a href="global.html#genTimeStamp">genTimeStamp</a></li><li><a href="global.html#getBrowserName">getBrowserName</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getCurrentPath">getCurrentPath</a></li><li><a href="global.html#getDevice">getDevice</a></li><li><a href="global.html#getInputIndex">getInputIndex</a></li><li><a href="global.html#getJsDir">getJsDir</a></li><li><a href="global.html#getLocation">getLocation</a></li><li><a href="global.html#getNetType">getNetType</a></li><li><a href="global.html#getPageHeight">getPageHeight</a></li><li><a href="global.html#getPageViewWidth">getPageViewWidth</a></li><li><a href="global.html#getPageWidth">getPageWidth</a></li><li><a href="global.html#getRequestParams">getRequestParams</a></li><li><a href="global.html#getStringLength">getStringLength</a></li><li><a href="global.html#getSystem">getSystem</a></li><li><a href="global.html#getType">getType</a></li><li><a href="global.html#getUrlState">getUrlState</a></li><li><a href="global.html#hexMd5">hexMd5</a></li><li><a href="global.html#hexToRgba">hexToRgba</a></li><li><a href="global.html#initRequestAnimationFrame">initRequestAnimationFrame</a></li><li><a href="global.html#isContains">isContains</a></li><li><a href="global.html#isDigit">isDigit</a></li><li><a href="global.html#isEndsWith">isEndsWith</a></li><li><a href="global.html#isStartsWith">isStartsWith</a></li><li><a href="global.html#loadScript">loadScript</a></li><li><a href="global.html#loadStyle">loadStyle</a></li><li><a href="global.html#localStorageTest">localStorageTest</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#numberUpperFormat">numberUpperFormat</a></li><li><a href="global.html#numOfComma">numOfComma</a></li><li><a href="global.html#objToQuery">objToQuery</a></li><li><a href="global.html#pad">pad</a></li><li><a href="global.html#pseudoHack">pseudoHack</a></li><li><a href="global.html#regularExpressionTest">regularExpressionTest</a></li><li><a href="global.html#remInit">remInit</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#replaceAll">replaceAll</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#sessionStorageTest">sessionStorageTest</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#stripHTMLTags">stripHTMLTags</a></li><li><a href="global.html#stripScripts">stripScripts</a></li><li><a href="global.html#throttle">throttle</a></li><li><a href="global.html#timeAgo">timeAgo</a></li><li><a href="global.html#toAscii">toAscii</a></li><li><a href="global.html#toHump">toHump</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#truncate">truncate</a></li><li><a href="global.html#ucfirst">ucfirst</a></li><li><a href="global.html#webpAnimataionSupportDetect">webpAnimataionSupportDetect</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 15:23:19 GMT+0800 (CST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 17:05:51 GMT+0800 (CST)
 </footer>
 
 <script> prettyPrint(); </script>

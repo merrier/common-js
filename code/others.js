@@ -233,3 +233,223 @@ function getCurrentPath(){
     currentPageUrl = this.href.toString().toLowerCase();
   }
 }
+
+
+/**
+ * [debounce description] 函数防抖动
+ * @param func {Function}   实际要执行的函数
+ * @param delay {Number}  执行间隔，单位是毫秒（ms）
+ * @param immediate {String}  是否第一次立即执行
+ * @return {Function}  返回一个“防抖动”函数
+ */
+function debounce(func, delay, immediate) {
+  var timer = null;
+  return function() {
+    const context = this;
+    const args = arguments;
+    if (timer) clearTimeout(timer);
+    if (immediate) {
+      // 根据距离上次触发操作的时间是否到达delay来决定是否要现在执行函数
+      const doNow = !timer;
+      // 每一次都重新设置timer，就是要保证每一次执行的至少delay秒后才可以执行
+      timer = setTimeout(function() {
+        timer = null;
+      }, delay);
+      // 立即执行
+      if (doNow) {
+        func.apply(context, args);
+      }
+    } else {
+      timer = setTimeout(function() {
+        func.apply(context, args);
+      }, delay);
+    }
+  };
+}
+
+/**
+ * [throttle description] 函数节流
+ * @param func {Function}   实际要执行的函数
+ * @param threshhold {Number}  执行间隔，单位是毫秒（ms）
+ * @param immediate {String}  是否第一次立即执行
+ * @return {Function}  返回一个“节流”函数
+ */
+function throttle(func, threshhold, immediate) {
+  // 记录是否可执行
+  var isRun = true;
+  // 定时器
+  var timer;
+  immediate = immediate || true;
+  // 默认间隔为 200ms
+  threshhold || (threshhold = 200);
+  // 返回的函数，每过 threshhold 毫秒就执行一次 fn 函数
+  return function() {
+    // 保存函数调用时的上下文和参数，传递给 fn
+    const context = this;
+    const args = arguments;
+    // 第一次执行
+    if (immediate && typeof timer === 'undefined') {
+      func();
+    }
+    if (!isRun) return;
+    isRun = false;
+    // 保证间隔时间内执行
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      func.apply(context, args);
+      isRun = true;
+    }, threshhold);
+  };
+}
+
+
+/**
+ * [appendQuery description] 给url添加query参数
+ * @param url {String}   需要添加的url
+ * @param query {String}  添加的query，一般为'name=value'
+ * @return {String}  返回新url
+ */
+function appendQuery(url, query) {
+  if (!query) {
+    return url;
+  }
+  var search;
+  var a = document.createElement("a");
+  a.href = url;
+  if (a.search) {
+    search = a.search + "&" + query;
+  } else {
+    search = "?" + query;
+  }
+  return a.protocol + "//" + a.host + a.pathname + search + a.hash;
+}
+
+
+/**
+ * [objToQuery description] 将object转换成query形式
+ * @param obj {Object}   需要转换的object
+ * @return {String}  返回query形式的字符串
+ */
+function objToQuery(obj) {
+  return Object.keys(obj).map(function(k) {
+    return [k, obj[k]].join('=');
+  }).join('&');
+}
+
+
+/**
+ * [cloneDeep description] 深度克隆object
+ * @param obj {Object}   需要克隆的object
+ * @return {Object}  克隆之后的新Object
+ */
+function cloneDeep(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+
+/**
+ * [getBrowserName description] 获取当前浏览器的名称
+ * @return {String}  浏览器名称
+ */
+function getBrowserName() {
+  var browserName = "Other";
+  var ua = window.navigator.userAgent;
+  var browserRegExp = {
+    Wechat: /micromessenger/,
+    QQBrowser: /qqbrowser/,
+    UC: /ubrowser|ucbrowser|ucweb/,
+    Shoujibaidu: /baiduboxapp|baiduhd|bidubrowser|baidubrowser/,
+    SamsungBrowser: /samsungbrowser/,
+    MiuiBrowser: /miuibrowser/,
+    Sogou : /sogoumobilebrowser|sogousearch/,
+    Explorer2345 : /2345explorer|2345chrome|mb2345browser/,
+    Liebao : /lbbrowser/,
+    Weibo: /__weibo__/,
+    OPPO: /oppobrowser/,
+    toutiao: /newsarticle/,
+    MobileQQ: /mobile.*qq/,
+    Firefox: /firefox/,
+    Maxthon: /maxthon/,
+    Se360: /360se/,
+    Ee360: /360ee/,
+    Safari: /(iphone|ipad).*version.*mobile.*safari/,
+    Chrome: /chrome|crios/,
+    AndroidBrowser: /android.*safari|android.*release.*browser/
+  };
+  for (var i in browserRegExp) {
+    if (browserRegExp[i].exec(ua.toLowerCase())) {
+      browserName = i;
+      break;
+    }
+  }
+  return browserName;
+}
+
+
+/**
+ * [getSystem description] 获取当前操作系统
+ * @return {String}  操作系统名称+版本
+ */
+function getSystem() {
+  var result = 'Android',
+      ua = navigator.userAgent;
+
+  if (ua.match(/(Android)\s+([\d.]+)/))
+    return 'Android_' + ua.match(/(Android)\s+([\d.]+)/)[2];
+
+  if (ua.match(/(iPad).*OS\s([\d_]+)/) || ua.match(/(iPhone\sOS)\s([\d_]+)/))
+    return result = 'iOS_' + (ua.match(/(iPad).*OS\s([\d_]+)/) ? ua.match(/(iPad).*OS\s([\d_]+)/)[2] : ua.match(/(iPhone\sOS)\s([\d_]+)/)[2]);
+
+  if (ua.match(/Windows Phone/))
+    return result = 'WP';
+
+  return result;
+}
+
+
+/**
+ * [getDevice description] 获取当前设备类型
+ * @return {String}  设备类型
+ */
+function getDevice() {
+  var deviceName = 'PC',
+      ua = navigator.userAgent;
+
+  var iPad = ua.match(/(iPad).*OS\s([\d_]+)/);
+  var iPhone = ua.match(/(iPhone\sOS)\s([\d_]+)/);
+  var Android = ua.match(/(Android)\s+([\d.]+)/);
+  var WP = ua.match(/(Windows Phone)\s+([\d.]+)/);
+
+  if (iPad) {
+    deviceName = 'iPad';
+  }
+  if (iPhone) {
+    deviceName = 'iPhone';
+  }
+  if (Android) {
+    if (!ua.toLowerCase().match(/mobile/)) {
+      deviceName = 'Pad';
+    } else if (ua.match(/chrome\/([\d.]+)/) && ua.toLowerCase().match(/mobile/)) {
+      deviceName = 'Phone';
+    } else if (ua.toLowerCase().match(/firefox\/([\d.]+)/) && ua.toLowerCase().match(/mobile/)) {
+      deviceName = 'Phone';
+    } else {
+      deviceName = 'Phone';
+    }
+  }
+  if (WP) {
+    deviceName = 'Phone';
+  }
+  return deviceName;
+}
+
+/**
+ * [getNetType description] 获取当前网络类型
+ * @return {String}  网络类型
+ */
+function getNetType(){
+  var netMatch = ua.match(/NetType\/([^\s]*)/i),
+      netType = "WIFI";
+  if (netMatch) netType = netMatch[1];
+  return netType;
+}

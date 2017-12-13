@@ -8,4 +8,4 @@ else
   npm install jsdoc -g
 fi
 
-jsdoc ./ ./README.md -d ./
+jsdoc ./code/ ./README.md -d ./

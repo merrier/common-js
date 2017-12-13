@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: style.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: style.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ 样式相关
+ Thanks：Coco
+*/
+
+/**
+ * [genRandomColor description] 产生随机颜色
+ * @return {String}  随机rgb格式的颜色像素值
+ */
+function genRandomColor() {
+  return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+}
+
+/**
+ * [addStyle description] 动态添加样式
+ * @param css {String}  css代码
+ * @return {Null}  无返回
+ */
+function addStyle(css) {
+  var style = document.createElement("style");
+  style.type = "text/css";
+  try {
+    style.appendChild(document.createTextNode(css));
+  } catch (ex) {
+    style.styleSheet.cssText = css;
+  }
+  document.getElementsByTagName('head')[0].appendChild(style);
+}
+
+
+/**
+ * [addStyle description] requestAnimationFrame初始化
+ * @return {Null}  无返回
+ */
+function initRequestAnimationFrame(){
+  window.requestAnimationFrame = (function () {
+    return window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      function (callback) {
+        setTimeout(callback, 1000 / 60);
+      }
+  })();
+}
+
+/**
+ * [hexToRgba description] 将hex格式像素值转换成rgba格式
+ * @param color {String}  hex格式像素值
+ * @param opacity {Number}  透明度
+ * @return {String}  返回rgba格式像素值
+ */
+function hexToRgba(color, opacity) {
+  color = color.replace('#', '');
+
+  if (color.length === 3) {
+    color = color.charAt(0) + color.charAt(0) + color.charAt(1) + color.charAt(1) + color.charAt(2) + color.charAt(2);
+  }
+
+  var r = parseInt(color.slice(0, 2), 16);
+  var g = parseInt(color.slice(2, 4), 16);
+  var b = parseInt(color.slice(4, 6), 16);
+
+  return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity + ')';
+}
+
+/**
+ * [getPageHeight description] 获取页面高度
+ * @return {Number}  页面高度
+ */
+function getPageHeight(){
+  var g = document, a = g.body, f = g.documentElement, d = g.compatMode == "BackCompat"
+    ? a
+    : g.documentElement;
+  return Math.max(f.scrollHeight, a.scrollHeight, d.clientHeight);
+}
+
+/**
+ * [getPageWidth description] 获取页面宽度
+ * @return {Number}  页面宽度
+ */
+function getPageWidth(){
+  var g = document, a = g.body, f = g.documentElement, d = g.compatMode == "BackCompat"?
+    a: g.documentElement;
+  return Math.max(f.scrollWidth, a.scrollWidth, d.clientWidth);
+}
+
+
+/**
+ * [getPageViewWidth description] 获取页面可视宽度
+ * @return {Number}  页面可视宽度
+ */
+function getPageViewWidth(){
+  var d = document, a = d.compatMode === "BackCompat" ?
+    d.body: d.documentElement;
+  return a.clientWidth;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addQuote">addQuote</a></li><li><a href="global.html#addStyle">addStyle</a></li><li><a href="global.html#bs2">bs2</a></li><li><a href="global.html#bs4">bs4</a></li><li><a href="global.html#bs8">bs8</a></li><li><a href="global.html#byteCount">byteCount</a></li><li><a href="global.html#copyTextToClipboard">copyTextToClipboard</a></li><li><a href="global.html#cssTest">cssTest</a></li><li><a href="global.html#escapeHTML">escapeHTML</a></li><li><a href="global.html#escapeRegExp">escapeRegExp</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#genRandomColor">genRandomColor</a></li><li><a href="global.html#genRandomString">genRandomString</a></li><li><a href="global.html#genTimeStamp">genTimeStamp</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getCurrentPath">getCurrentPath</a></li><li><a href="global.html#getInputIndex">getInputIndex</a></li><li><a href="global.html#getJsDir">getJsDir</a></li><li><a href="global.html#getLocation">getLocation</a></li><li><a href="global.html#getPageHeight">getPageHeight</a></li><li><a href="global.html#getPageViewWidth">getPageViewWidth</a></li><li><a href="global.html#getPageWidth">getPageWidth</a></li><li><a href="global.html#getRequestParams">getRequestParams</a></li><li><a href="global.html#getStringLength">getStringLength</a></li><li><a href="global.html#getType">getType</a></li><li><a href="global.html#getUrlState">getUrlState</a></li><li><a href="global.html#hexMd5">hexMd5</a></li><li><a href="global.html#hexToRgba">hexToRgba</a></li><li><a href="global.html#initRequestAnimationFrame">initRequestAnimationFrame</a></li><li><a href="global.html#isContains">isContains</a></li><li><a href="global.html#isDigit">isDigit</a></li><li><a href="global.html#isEndsWith">isEndsWith</a></li><li><a href="global.html#isStartsWith">isStartsWith</a></li><li><a href="global.html#loadScript">loadScript</a></li><li><a href="global.html#loadStyle">loadStyle</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#numOfComma">numOfComma</a></li><li><a href="global.html#pad">pad</a></li><li><a href="global.html#pseudoHack">pseudoHack</a></li><li><a href="global.html#regularExpressionTest">regularExpressionTest</a></li><li><a href="global.html#remInit">remInit</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#replaceAll">replaceAll</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#stripHTMLTags">stripHTMLTags</a></li><li><a href="global.html#stripScripts">stripScripts</a></li><li><a href="global.html#toAscii">toAscii</a></li><li><a href="global.html#toHump">toHump</a></li><li><a href="global.html#transformMoney">transformMoney</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#truncate">truncate</a></li><li><a href="global.html#ucfirst">ucfirst</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 10:26:39 GMT+0800 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

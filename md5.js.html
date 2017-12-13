@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: md5.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: md5.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ md5加密函数
+ Thanks：Coco
+*/
+
+
+/**
+ * [hexMd5 description] md5加密函数
+ * @param sMessage {String}  需要加密的字符串
+ * @param bit {Number}  加密返回的位数，默认为16
+ * @return {String}  返回md5加密后的字符串
+ */
+function hexMd5(sMessage, bit) {
+
+  function RotateLeft(lValue, iShiftBits) {
+    return (lValue &lt;&lt; iShiftBits) | (lValue >>> (32 - iShiftBits));
+  }
+
+  function AddUnsigned(lX, lY) {
+    var lX4, lY4, lX8, lY8, lResult;
+    lX8 = (lX &amp; 0x80000000);
+    lY8 = (lY &amp; 0x80000000);
+    lX4 = (lX &amp; 0x40000000);
+    lY4 = (lY &amp; 0x40000000);
+    lResult = (lX &amp; 0x3FFFFFFF) + (lY &amp; 0x3FFFFFFF);
+    if (lX4 &amp; lY4) return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
+    if (lX4 | lY4) {
+      if (lResult &amp; 0x40000000) return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
+      else return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
+    } else return (lResult ^ lX8 ^ lY8);
+  }
+
+  function F(x, y, z) {
+    return (x &amp; y) | ((~x) &amp; z);
+  }
+
+  function G(x, y, z) {
+    return (x &amp; z) | (y &amp; (~z));
+  }
+
+  function H(x, y, z) {
+    return (x ^ y ^ z);
+  }
+
+  function I(x, y, z) {
+    return (y ^ (x | (~z)));
+  }
+
+  function FF(a, b, c, d, x, s, ac) {
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
+    return AddUnsigned(RotateLeft(a, s), b);
+  }
+
+  function GG(a, b, c, d, x, s, ac) {
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
+    return AddUnsigned(RotateLeft(a, s), b);
+  }
+
+  function HH(a, b, c, d, x, s, ac) {
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
+    return AddUnsigned(RotateLeft(a, s), b);
+  }
+
+  function II(a, b, c, d, x, s, ac) {
+    a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
+    return AddUnsigned(RotateLeft(a, s), b);
+  }
+
+  function ConvertToWordArray(sMessage) {
+    var lWordCount;
+    var lMessageLength = sMessage.length;
+    var lNumberOfWords_temp1 = lMessageLength + 8;
+    var lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
+    var lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
+    var lWordArray = Array(lNumberOfWords - 1);
+    var lBytePosition = 0;
+    var lByteCount = 0;
+    while (lByteCount &lt; lMessageLength) {
+      lWordCount = (lByteCount - (lByteCount % 4)) / 4;
+      lBytePosition = (lByteCount % 4) * 8;
+      lWordArray[lWordCount] = (lWordArray[lWordCount] | (sMessage.charCodeAt(lByteCount) &lt;&lt; lBytePosition));
+      lByteCount++;
+    }
+    lWordCount = (lByteCount - (lByteCount % 4)) / 4;
+    lBytePosition = (lByteCount % 4) * 8;
+    lWordArray[lWordCount] = lWordArray[lWordCount] | (0x80 &lt;&lt; lBytePosition);
+    lWordArray[lNumberOfWords - 2] = lMessageLength &lt;&lt; 3;
+    lWordArray[lNumberOfWords - 1] = lMessageLength >>> 29;
+    return lWordArray;
+  }
+
+  function WordToHex(lValue) {
+    var WordToHexValue = "",
+      WordToHexValue_temp = "",
+      lByte, lCount;
+    for (lCount = 0; lCount &lt;= 3; lCount++) {
+      lByte = (lValue >>> (lCount * 8)) &amp; 255;
+      WordToHexValue_temp = "0" + lByte.toString(16);
+      WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length - 2, 2);
+    }
+    return WordToHexValue;
+  }
+  var x = [];
+  var k, AA, BB, CC, DD, a, b, c, d;
+  var S11 = 7,
+    S12 = 12,
+    S13 = 17,
+    S14 = 22;
+  var S21 = 5,
+    S22 = 9,
+    S23 = 14,
+    S24 = 20;
+  var S31 = 4,
+    S32 = 11,
+    S33 = 16,
+    S34 = 23;
+  var S41 = 6,
+    S42 = 10,
+    S43 = 15,
+    S44 = 21;
+  // Steps 1 and 2. Append padding bits and length and convert to words
+  x = ConvertToWordArray(sMessage);
+  // Step 3. Initialise
+  a = 0x67452301;
+  b = 0xEFCDAB89;
+  c = 0x98BADCFE;
+  d = 0x10325476;
+  // Step 4. Process the message in 16-word blocks
+  for (k = 0; k &lt; x.length; k += 16) {
+    AA = a;
+    BB = b;
+    CC = c;
+    DD = d;
+    a = FF(a, b, c, d, x[k + 0], S11, 0xD76AA478);
+    d = FF(d, a, b, c, x[k + 1], S12, 0xE8C7B756);
+    c = FF(c, d, a, b, x[k + 2], S13, 0x242070DB);
+    b = FF(b, c, d, a, x[k + 3], S14, 0xC1BDCEEE);
+    a = FF(a, b, c, d, x[k + 4], S11, 0xF57C0FAF);
+    d = FF(d, a, b, c, x[k + 5], S12, 0x4787C62A);
+    c = FF(c, d, a, b, x[k + 6], S13, 0xA8304613);
+    b = FF(b, c, d, a, x[k + 7], S14, 0xFD469501);
+    a = FF(a, b, c, d, x[k + 8], S11, 0x698098D8);
+    d = FF(d, a, b, c, x[k + 9], S12, 0x8B44F7AF);
+    c = FF(c, d, a, b, x[k + 10], S13, 0xFFFF5BB1);
+    b = FF(b, c, d, a, x[k + 11], S14, 0x895CD7BE);
+    a = FF(a, b, c, d, x[k + 12], S11, 0x6B901122);
+    d = FF(d, a, b, c, x[k + 13], S12, 0xFD987193);
+    c = FF(c, d, a, b, x[k + 14], S13, 0xA679438E);
+    b = FF(b, c, d, a, x[k + 15], S14, 0x49B40821);
+    a = GG(a, b, c, d, x[k + 1], S21, 0xF61E2562);
+    d = GG(d, a, b, c, x[k + 6], S22, 0xC040B340);
+    c = GG(c, d, a, b, x[k + 11], S23, 0x265E5A51);
+    b = GG(b, c, d, a, x[k + 0], S24, 0xE9B6C7AA);
+    a = GG(a, b, c, d, x[k + 5], S21, 0xD62F105D);
+    d = GG(d, a, b, c, x[k + 10], S22, 0x2441453);
+    c = GG(c, d, a, b, x[k + 15], S23, 0xD8A1E681);
+    b = GG(b, c, d, a, x[k + 4], S24, 0xE7D3FBC8);
+    a = GG(a, b, c, d, x[k + 9], S21, 0x21E1CDE6);
+    d = GG(d, a, b, c, x[k + 14], S22, 0xC33707D6);
+    c = GG(c, d, a, b, x[k + 3], S23, 0xF4D50D87);
+    b = GG(b, c, d, a, x[k + 8], S24, 0x455A14ED);
+    a = GG(a, b, c, d, x[k + 13], S21, 0xA9E3E905);
+    d = GG(d, a, b, c, x[k + 2], S22, 0xFCEFA3F8);
+    c = GG(c, d, a, b, x[k + 7], S23, 0x676F02D9);
+    b = GG(b, c, d, a, x[k + 12], S24, 0x8D2A4C8A);
+    a = HH(a, b, c, d, x[k + 5], S31, 0xFFFA3942);
+    d = HH(d, a, b, c, x[k + 8], S32, 0x8771F681);
+    c = HH(c, d, a, b, x[k + 11], S33, 0x6D9D6122);
+    b = HH(b, c, d, a, x[k + 14], S34, 0xFDE5380C);
+    a = HH(a, b, c, d, x[k + 1], S31, 0xA4BEEA44);
+    d = HH(d, a, b, c, x[k + 4], S32, 0x4BDECFA9);
+    c = HH(c, d, a, b, x[k + 7], S33, 0xF6BB4B60);
+    b = HH(b, c, d, a, x[k + 10], S34, 0xBEBFBC70);
+    a = HH(a, b, c, d, x[k + 13], S31, 0x289B7EC6);
+    d = HH(d, a, b, c, x[k + 0], S32, 0xEAA127FA);
+    c = HH(c, d, a, b, x[k + 3], S33, 0xD4EF3085);
+    b = HH(b, c, d, a, x[k + 6], S34, 0x4881D05);
+    a = HH(a, b, c, d, x[k + 9], S31, 0xD9D4D039);
+    d = HH(d, a, b, c, x[k + 12], S32, 0xE6DB99E5);
+    c = HH(c, d, a, b, x[k + 15], S33, 0x1FA27CF8);
+    b = HH(b, c, d, a, x[k + 2], S34, 0xC4AC5665);
+    a = II(a, b, c, d, x[k + 0], S41, 0xF4292244);
+    d = II(d, a, b, c, x[k + 7], S42, 0x432AFF97);
+    c = II(c, d, a, b, x[k + 14], S43, 0xAB9423A7);
+    b = II(b, c, d, a, x[k + 5], S44, 0xFC93A039);
+    a = II(a, b, c, d, x[k + 12], S41, 0x655B59C3);
+    d = II(d, a, b, c, x[k + 3], S42, 0x8F0CCC92);
+    c = II(c, d, a, b, x[k + 10], S43, 0xFFEFF47D);
+    b = II(b, c, d, a, x[k + 1], S44, 0x85845DD1);
+    a = II(a, b, c, d, x[k + 8], S41, 0x6FA87E4F);
+    d = II(d, a, b, c, x[k + 15], S42, 0xFE2CE6E0);
+    c = II(c, d, a, b, x[k + 6], S43, 0xA3014314);
+    b = II(b, c, d, a, x[k + 13], S44, 0x4E0811A1);
+    a = II(a, b, c, d, x[k + 4], S41, 0xF7537E82);
+    d = II(d, a, b, c, x[k + 11], S42, 0xBD3AF235);
+    c = II(c, d, a, b, x[k + 2], S43, 0x2AD7D2BB);
+    b = II(b, c, d, a, x[k + 9], S44, 0xEB86D391);
+    a = AddUnsigned(a, AA);
+    b = AddUnsigned(b, BB);
+    c = AddUnsigned(c, CC);
+    d = AddUnsigned(d, DD);
+  }
+  if (bit === 32) {
+    return WordToHex(a) + WordToHex(b) + WordToHex(c) + WordToHex(d);
+  } else {
+    return WordToHex(b) + WordToHex(c);
+  }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addQuote">addQuote</a></li><li><a href="global.html#addStyle">addStyle</a></li><li><a href="global.html#bs2">bs2</a></li><li><a href="global.html#bs4">bs4</a></li><li><a href="global.html#bs8">bs8</a></li><li><a href="global.html#byteCount">byteCount</a></li><li><a href="global.html#copyTextToClipboard">copyTextToClipboard</a></li><li><a href="global.html#cssTest">cssTest</a></li><li><a href="global.html#escapeHTML">escapeHTML</a></li><li><a href="global.html#escapeRegExp">escapeRegExp</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#genRandomColor">genRandomColor</a></li><li><a href="global.html#genRandomString">genRandomString</a></li><li><a href="global.html#genTimeStamp">genTimeStamp</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getCurrentPath">getCurrentPath</a></li><li><a href="global.html#getInputIndex">getInputIndex</a></li><li><a href="global.html#getJsDir">getJsDir</a></li><li><a href="global.html#getLocation">getLocation</a></li><li><a href="global.html#getPageHeight">getPageHeight</a></li><li><a href="global.html#getPageViewWidth">getPageViewWidth</a></li><li><a href="global.html#getPageWidth">getPageWidth</a></li><li><a href="global.html#getRequestParams">getRequestParams</a></li><li><a href="global.html#getStringLength">getStringLength</a></li><li><a href="global.html#getType">getType</a></li><li><a href="global.html#getUrlState">getUrlState</a></li><li><a href="global.html#hexMd5">hexMd5</a></li><li><a href="global.html#hexToRgba">hexToRgba</a></li><li><a href="global.html#initRequestAnimationFrame">initRequestAnimationFrame</a></li><li><a href="global.html#isContains">isContains</a></li><li><a href="global.html#isDigit">isDigit</a></li><li><a href="global.html#isEndsWith">isEndsWith</a></li><li><a href="global.html#isStartsWith">isStartsWith</a></li><li><a href="global.html#loadScript">loadScript</a></li><li><a href="global.html#loadStyle">loadStyle</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#numOfComma">numOfComma</a></li><li><a href="global.html#pad">pad</a></li><li><a href="global.html#pseudoHack">pseudoHack</a></li><li><a href="global.html#regularExpressionTest">regularExpressionTest</a></li><li><a href="global.html#remInit">remInit</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#replaceAll">replaceAll</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#stripHTMLTags">stripHTMLTags</a></li><li><a href="global.html#stripScripts">stripScripts</a></li><li><a href="global.html#toAscii">toAscii</a></li><li><a href="global.html#toHump">toHump</a></li><li><a href="global.html#transformMoney">transformMoney</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#truncate">truncate</a></li><li><a href="global.html#ucfirst">ucfirst</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 10:26:39 GMT+0800 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -9,3 +9,7 @@ else
 fi
 
 jsdoc ./code/ ./README.md -d ./
+
+git add .
+git commit -m 'update'
+git push origin master

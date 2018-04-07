@@ -12,4 +12,5 @@ jsdoc ./code/ ./README.md -d ./
 
 git add .
 git commit -m 'update'
+git pull --rebase
 git push origin master

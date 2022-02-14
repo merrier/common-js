@@ -31,7 +31,6 @@
  Thanks：Coco
 */
 
-
 /**
  * [cssTest description] 用于简单的 CSS 特性检测，来自：https://github.com/chokcoco/iCSS/issues/9
  * @param property {String}  需要检测的 CSS 属性名
@@ -40,24 +39,23 @@
  */
 function cssTest(property, value) {
   // 用于测试的元素，隐藏在页面上
-  var ele = document.getElementById('test-display-none');
+  var ele = document.getElementById("test-display-none");
 
   // 只有一个参数的情况
-  if(arguments.length === 1) {
-    if(property in ele.style) {
+  if (arguments.length === 1) {
+    if (property in ele.style) {
       return true;
     }
     // 两个参数的情况
-  }else if(arguments.length === 2){
+  } else if (arguments.length === 2) {
     ele.style[property] = value;
 
-    if(ele.style[property]) {
+    if (ele.style[property]) {
       return true;
     }
   }
   return false;
 }
-
 
 /**
  * [pseudoHack description] IE6,7兼容伪类设置
@@ -65,9 +63,9 @@ function cssTest(property, value) {
  * @return {Null}  无返回
  */
 function pseudoHack(dom) {
-  if (document.querySelector || !dom &amp;&amp; dom.nodeType !== 1) return;
+  if (document.querySelector || (!dom &amp;&amp; dom.nodeType !== 1)) return;
 
-  var content = dom.getAttribute("data-content") || '';
+  var content = dom.getAttribute("data-content") || "";
   var before = document.createElement("before"),
     after = document.createElement("after");
 
@@ -78,7 +76,6 @@ function pseudoHack(dom) {
   dom.insertBefore(before, dom.firstChild);
   dom.appendChild(after);
 }
-
 
 /**
  * [webpAnimataionSupportDetect description] 检测对webp的支持，来自：https://developers.google.com/speed/webp/faq
@@ -91,22 +88,24 @@ function pseudoHack(dom) {
  * @param {Function} callback
  * @return {Object}  返回callback结果
  */
-function webpAnimataionSupportDetect (feature, callback) {
+function webpAnimataionSupportDetect(feature, callback) {
   var kTestImages = {
-    lossy: 'UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA',
-    lossless: 'UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==',
-    alpha: 'UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==',
-    animation: 'UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA'
+    lossy: "UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA",
+    lossless: "UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==",
+    alpha:
+      "UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==",
+    animation:
+      "UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA"
   };
   var img = new Image();
-  img.onload = function () {
+  img.onload = function() {
     var result = img.width > 0 &amp;&amp; img.height > 0;
     callback(result);
   };
-  img.onerror = function () {
+  img.onerror = function() {
     callback(false);
   };
-  img.src = 'data:image/webp;base64,' + kTestImages[feature];
+  img.src = "data:image/webp;base64," + kTestImages[feature];
 }
 
 /**
@@ -114,29 +113,52 @@ function webpAnimataionSupportDetect (feature, callback) {
  * @return {Boolean}  返回检测结果
  */
 function localStorageTest() {
-  var mod = 'test';
+  var mod = "test";
   try {
     localStorage.setItem(mod, mod);
     localStorage.removeItem(mod);
     return true;
-  } catch(e) {
+  } catch (e) {
     return false;
   }
 }
-
 
 /**
  * [sessionStorageTest description] sessionStorage支持度检测
  * @return {Boolean}  返回检测结果
  */
 function sessionStorageTest() {
-  var mod = 'test';
+  var mod = "test";
   try {
     sessionStorage.setItem(mod, mod);
     sessionStorage.removeItem(mod);
     return true;
-  } catch(e) {
+  } catch (e) {
     return false;
+  }
+}
+
+/**
+ * [SVGTest description] SVG支持度检测
+ * @return {Boolean}  返回检测结果
+ */
+function SVGTest() {
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  return (
+    !!document.createElementNS &amp;&amp;
+    !!document.createElementNS(SVG_NS, "svg").createSVGRect
+  );
+}
+
+/**
+ * [CanvasTest description] Canvas支持度检测
+ * @return {Boolean}  返回检测结果
+ */
+function CanvasTest() {
+  if (!document.createElement("canvas").getContext) {
+    return false;
+  } else {
+    return true;
   }
 }</code></pre>
         </article>
@@ -148,13 +170,13 @@ function sessionStorageTest() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addQuote">addQuote</a></li><li><a href="global.html#addStyle">addStyle</a></li><li><a href="global.html#appendQuery">appendQuery</a></li><li><a href="global.html#bs2">bs2</a></li><li><a href="global.html#bs4">bs4</a></li><li><a href="global.html#bs8">bs8</a></li><li><a href="global.html#byteCount">byteCount</a></li><li><a href="global.html#cloneDeep">cloneDeep</a></li><li><a href="global.html#copyTextToClipboard">copyTextToClipboard</a></li><li><a href="global.html#cssTest">cssTest</a></li><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#digitUppercase">digitUppercase</a></li><li><a href="global.html#escapeHTML">escapeHTML</a></li><li><a href="global.html#escapeRegExp">escapeRegExp</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDuration">formatDuration</a></li><li><a href="global.html#genRandomColor">genRandomColor</a></li><li><a href="global.html#genRandomString">genRandomString</a></li><li><a href="global.html#genTimeStamp">genTimeStamp</a></li><li><a href="global.html#getBrowserName">getBrowserName</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getCurrentPath">getCurrentPath</a></li><li><a href="global.html#getDevice">getDevice</a></li><li><a href="global.html#getInputIndex">getInputIndex</a></li><li><a href="global.html#getJsDir">getJsDir</a></li><li><a href="global.html#getLocation">getLocation</a></li><li><a href="global.html#getNetType">getNetType</a></li><li><a href="global.html#getPageHeight">getPageHeight</a></li><li><a href="global.html#getPageViewWidth">getPageViewWidth</a></li><li><a href="global.html#getPageWidth">getPageWidth</a></li><li><a href="global.html#getRequestParams">getRequestParams</a></li><li><a href="global.html#getStringLength">getStringLength</a></li><li><a href="global.html#getSystem">getSystem</a></li><li><a href="global.html#getType">getType</a></li><li><a href="global.html#getUrlState">getUrlState</a></li><li><a href="global.html#hexMd5">hexMd5</a></li><li><a href="global.html#hexToRgba">hexToRgba</a></li><li><a href="global.html#initRequestAnimationFrame">initRequestAnimationFrame</a></li><li><a href="global.html#isContains">isContains</a></li><li><a href="global.html#isDigit">isDigit</a></li><li><a href="global.html#isEndsWith">isEndsWith</a></li><li><a href="global.html#isStartsWith">isStartsWith</a></li><li><a href="global.html#loadScript">loadScript</a></li><li><a href="global.html#loadStyle">loadStyle</a></li><li><a href="global.html#localStorageTest">localStorageTest</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#numberUpperFormat">numberUpperFormat</a></li><li><a href="global.html#numOfComma">numOfComma</a></li><li><a href="global.html#objToQuery">objToQuery</a></li><li><a href="global.html#pad">pad</a></li><li><a href="global.html#pseudoHack">pseudoHack</a></li><li><a href="global.html#regularExpressionTest">regularExpressionTest</a></li><li><a href="global.html#remInit">remInit</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#replaceAll">replaceAll</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#sessionStorageTest">sessionStorageTest</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#stripHTMLTags">stripHTMLTags</a></li><li><a href="global.html#stripScripts">stripScripts</a></li><li><a href="global.html#throttle">throttle</a></li><li><a href="global.html#timeAgo">timeAgo</a></li><li><a href="global.html#toAscii">toAscii</a></li><li><a href="global.html#toHump">toHump</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#truncate">truncate</a></li><li><a href="global.html#ucfirst">ucfirst</a></li><li><a href="global.html#webpAnimataionSupportDetect">webpAnimataionSupportDetect</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addQuote">addQuote</a></li><li><a href="global.html#addStyle">addStyle</a></li><li><a href="global.html#appendQuery">appendQuery</a></li><li><a href="global.html#bs2">bs2</a></li><li><a href="global.html#bs4">bs4</a></li><li><a href="global.html#bs8">bs8</a></li><li><a href="global.html#byteCount">byteCount</a></li><li><a href="global.html#CanvasTest">CanvasTest</a></li><li><a href="global.html#cloneDeep">cloneDeep</a></li><li><a href="global.html#copyTextToClipboard">copyTextToClipboard</a></li><li><a href="global.html#countItemNum">countItemNum</a></li><li><a href="global.html#cssTest">cssTest</a></li><li><a href="global.html#dateToString">dateToString</a></li><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#digitUppercase">digitUppercase</a></li><li><a href="global.html#escapeHTML">escapeHTML</a></li><li><a href="global.html#escapeRegExp">escapeRegExp</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDuration">formatDuration</a></li><li><a href="global.html#genDateArray">genDateArray</a></li><li><a href="global.html#generateDaysArray">generateDaysArray</a></li><li><a href="global.html#genRandomColor">genRandomColor</a></li><li><a href="global.html#genRandomHEX">genRandomHEX</a></li><li><a href="global.html#genRandomId">genRandomId</a></li><li><a href="global.html#genRandomNum">genRandomNum</a></li><li><a href="global.html#genRandomString">genRandomString</a></li><li><a href="global.html#genStarScore">genStarScore</a></li><li><a href="global.html#genTimeStamp">genTimeStamp</a></li><li><a href="global.html#getBrowserName">getBrowserName</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getCurrentPath">getCurrentPath</a></li><li><a href="global.html#getDateDiff">getDateDiff</a></li><li><a href="global.html#getDevice">getDevice</a></li><li><a href="global.html#getInputIndex">getInputIndex</a></li><li><a href="global.html#getJsDir">getJsDir</a></li><li><a href="global.html#getLocation">getLocation</a></li><li><a href="global.html#getNetType">getNetType</a></li><li><a href="global.html#getPageHeight">getPageHeight</a></li><li><a href="global.html#getPageViewWidth">getPageViewWidth</a></li><li><a href="global.html#getPageWidth">getPageWidth</a></li><li><a href="global.html#getRandomItem">getRandomItem</a></li><li><a href="global.html#getRequestParams">getRequestParams</a></li><li><a href="global.html#getRoundNum">getRoundNum</a></li><li><a href="global.html#getSearchParams">getSearchParams</a></li><li><a href="global.html#getStringLength">getStringLength</a></li><li><a href="global.html#getSystem">getSystem</a></li><li><a href="global.html#getType">getType</a></li><li><a href="global.html#getUrlState">getUrlState</a></li><li><a href="global.html#hexMd5">hexMd5</a></li><li><a href="global.html#hexToRgba">hexToRgba</a></li><li><a href="global.html#initRequestAnimationFrame">initRequestAnimationFrame</a></li><li><a href="global.html#isContains">isContains</a></li><li><a href="global.html#isDigit">isDigit</a></li><li><a href="global.html#isEndsWith">isEndsWith</a></li><li><a href="global.html#isStartsWith">isStartsWith</a></li><li><a href="global.html#loadScript">loadScript</a></li><li><a href="global.html#loadStyle">loadStyle</a></li><li><a href="global.html#localStorageTest">localStorageTest</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#numberUpperFormat">numberUpperFormat</a></li><li><a href="global.html#numOfComma">numOfComma</a></li><li><a href="global.html#numOfComma2">numOfComma2</a></li><li><a href="global.html#objToQuery">objToQuery</a></li><li><a href="global.html#pad">pad</a></li><li><a href="global.html#pseudoHack">pseudoHack</a></li><li><a href="global.html#regularExpressionTest">regularExpressionTest</a></li><li><a href="global.html#remInit">remInit</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#replaceAll">replaceAll</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#sessionStorageTest">sessionStorageTest</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#showDomOutline">showDomOutline</a></li><li><a href="global.html#stringToDate">stringToDate</a></li><li><a href="global.html#stripHTMLTags">stripHTMLTags</a></li><li><a href="global.html#stripScripts">stripScripts</a></li><li><a href="global.html#SVGTest">SVGTest</a></li><li><a href="global.html#throttle">throttle</a></li><li><a href="global.html#timeAgo">timeAgo</a></li><li><a href="global.html#toAscii">toAscii</a></li><li><a href="global.html#toHump">toHump</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#truncate">truncate</a></li><li><a href="global.html#ucfirst">ucfirst</a></li><li><a href="global.html#webpAnimataionSupportDetect">webpAnimataionSupportDetect</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 17:05:51 GMT+0800 (CST)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 14 2022 16:57:07 GMT+0800 (China Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

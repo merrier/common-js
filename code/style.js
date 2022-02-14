@@ -12,6 +12,15 @@ function genRandomColor() {
 }
 
 /**
+ * [genRandomHEX description] 生成随机HEX色值
+ * @return {String}  随机HEX色值
+ */
+function genRandomHEX() {
+  return "#" + Math.floor(Math.random() * 0xffffff).toString(16).padEnd(6, "0");
+}
+
+
+/**
  * [addStyle description] 动态添加样式
  * @param css {String}  css代码
  * @return {Null}  无返回

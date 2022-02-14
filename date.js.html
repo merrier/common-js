@@ -32,6 +32,28 @@
 
 
 /**
+ * [dateToString description] 获取字符串形式的年月日，使用数组的join方法返回连接起来的字符串
+ * @param date {Date} 需要转换成字符串格式的日期
+ * @return {String} 字符串格式的日期
+ */
+function dateToString(date) {
+  return [date.getFullYear(),
+    (date.getMonth() + 1 &lt; 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1,
+    (date.getDate() &lt; 10) ? '0' + (date.getDate()) : date.getDate()
+  ].join("-");
+}
+
+/**
+ * [stringToDate description] 使字符串形式的日期返回为Date型的日期
+ * @param str {String} 需要转换成日期格式的字符串
+ * @return {Date} 日期
+ */
+function stringToDate(str) {
+  const strArr = str.split('-');
+  return new Date(strArr[0], strArr[1] - 1, strArr[2]);
+}
+
+/**
  * [formatDate description] 时间戳转换
  * @param date {Date}   Date对象
  * @param fmt {String}  转换格式
@@ -113,6 +135,58 @@ function timeAgo(agoTimeStamp, nowTimeStamp){
     result="刚刚";
   }
   return result;
+}
+
+/**
+ * [generateDaysArray description] 根据开始时间和结束时间，返回其间所有天组成的数组
+ * @param start {String} 字符串格式的开始日期
+ * @param end {String} 字符串格式的结束日期
+ * @return {Array} 其间所有天组成的数组
+ */
+function generateDaysArray(start, end) {
+  // 获取传入字符串形式参数的Date型日期
+  const retArr = [];
+
+  if (start &amp;&amp; end) {
+
+    if (start === end) { // TODO: 优化这部分逻辑
+      retArr.push(dateToString(stringToDate(start)));
+      return retArr;
+    }
+
+    var st = stringToDate(start);
+    const et = stringToDate(end);
+
+    // 获取开始日期的年，月，日
+    const yyyy = st.getFullYear(),
+      mm = st.getMonth();
+    var dd = st.getDate();
+    // 循环
+    while (st.getTime() !== et.getTime()) {
+      // 使用dd++进行天数的自增
+
+      st = new Date(yyyy, mm, dd++);
+      retArr.push(dateToString(st));
+    }
+  }
+  return retArr;
+}
+
+
+/**
+ * [getDateDiff description] 根据开始时间和结束时间，计算相差的天数
+ * @param start {String} 字符串格式的开始日期->"YYYY-MM-DD"
+ * @param end {String} 字符串格式的结束日期->"YYYY-MM-DD"
+ * @return {Number} 相差天数
+ */
+function getDateDiff(start, end) {
+  var  aDate,  oDate1,  oDate2,  iDays;
+  aDate  =  start.split("-");
+  oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0]); // 转换为12-18-2002格式
+  aDate  =  end.split("-");
+  oDate2  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0]);
+  iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24); // 把相差的毫秒数转换为天数
+  return  iDays + 1; // 需要将最后一天加上
 }</code></pre>
         </article>
     </section>
@@ -123,13 +197,13 @@ function timeAgo(agoTimeStamp, nowTimeStamp){
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addQuote">addQuote</a></li><li><a href="global.html#addStyle">addStyle</a></li><li><a href="global.html#appendQuery">appendQuery</a></li><li><a href="global.html#bs2">bs2</a></li><li><a href="global.html#bs4">bs4</a></li><li><a href="global.html#bs8">bs8</a></li><li><a href="global.html#byteCount">byteCount</a></li><li><a href="global.html#cloneDeep">cloneDeep</a></li><li><a href="global.html#copyTextToClipboard">copyTextToClipboard</a></li><li><a href="global.html#cssTest">cssTest</a></li><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#digitUppercase">digitUppercase</a></li><li><a href="global.html#escapeHTML">escapeHTML</a></li><li><a href="global.html#escapeRegExp">escapeRegExp</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDuration">formatDuration</a></li><li><a href="global.html#genRandomColor">genRandomColor</a></li><li><a href="global.html#genRandomString">genRandomString</a></li><li><a href="global.html#genTimeStamp">genTimeStamp</a></li><li><a href="global.html#getBrowserName">getBrowserName</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getCurrentPath">getCurrentPath</a></li><li><a href="global.html#getDevice">getDevice</a></li><li><a href="global.html#getInputIndex">getInputIndex</a></li><li><a href="global.html#getJsDir">getJsDir</a></li><li><a href="global.html#getLocation">getLocation</a></li><li><a href="global.html#getNetType">getNetType</a></li><li><a href="global.html#getPageHeight">getPageHeight</a></li><li><a href="global.html#getPageViewWidth">getPageViewWidth</a></li><li><a href="global.html#getPageWidth">getPageWidth</a></li><li><a href="global.html#getRequestParams">getRequestParams</a></li><li><a href="global.html#getStringLength">getStringLength</a></li><li><a href="global.html#getSystem">getSystem</a></li><li><a href="global.html#getType">getType</a></li><li><a href="global.html#getUrlState">getUrlState</a></li><li><a href="global.html#hexMd5">hexMd5</a></li><li><a href="global.html#hexToRgba">hexToRgba</a></li><li><a href="global.html#initRequestAnimationFrame">initRequestAnimationFrame</a></li><li><a href="global.html#isContains">isContains</a></li><li><a href="global.html#isDigit">isDigit</a></li><li><a href="global.html#isEndsWith">isEndsWith</a></li><li><a href="global.html#isStartsWith">isStartsWith</a></li><li><a href="global.html#loadScript">loadScript</a></li><li><a href="global.html#loadStyle">loadStyle</a></li><li><a href="global.html#localStorageTest">localStorageTest</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#numberUpperFormat">numberUpperFormat</a></li><li><a href="global.html#numOfComma">numOfComma</a></li><li><a href="global.html#objToQuery">objToQuery</a></li><li><a href="global.html#pad">pad</a></li><li><a href="global.html#pseudoHack">pseudoHack</a></li><li><a href="global.html#regularExpressionTest">regularExpressionTest</a></li><li><a href="global.html#remInit">remInit</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#replaceAll">replaceAll</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#sessionStorageTest">sessionStorageTest</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#stripHTMLTags">stripHTMLTags</a></li><li><a href="global.html#stripScripts">stripScripts</a></li><li><a href="global.html#throttle">throttle</a></li><li><a href="global.html#timeAgo">timeAgo</a></li><li><a href="global.html#toAscii">toAscii</a></li><li><a href="global.html#toHump">toHump</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#truncate">truncate</a></li><li><a href="global.html#ucfirst">ucfirst</a></li><li><a href="global.html#webpAnimataionSupportDetect">webpAnimataionSupportDetect</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addQuote">addQuote</a></li><li><a href="global.html#addStyle">addStyle</a></li><li><a href="global.html#appendQuery">appendQuery</a></li><li><a href="global.html#bs2">bs2</a></li><li><a href="global.html#bs4">bs4</a></li><li><a href="global.html#bs8">bs8</a></li><li><a href="global.html#byteCount">byteCount</a></li><li><a href="global.html#CanvasTest">CanvasTest</a></li><li><a href="global.html#cloneDeep">cloneDeep</a></li><li><a href="global.html#copyTextToClipboard">copyTextToClipboard</a></li><li><a href="global.html#countItemNum">countItemNum</a></li><li><a href="global.html#cssTest">cssTest</a></li><li><a href="global.html#dateToString">dateToString</a></li><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#digitUppercase">digitUppercase</a></li><li><a href="global.html#escapeHTML">escapeHTML</a></li><li><a href="global.html#escapeRegExp">escapeRegExp</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatDuration">formatDuration</a></li><li><a href="global.html#genDateArray">genDateArray</a></li><li><a href="global.html#generateDaysArray">generateDaysArray</a></li><li><a href="global.html#genRandomColor">genRandomColor</a></li><li><a href="global.html#genRandomHEX">genRandomHEX</a></li><li><a href="global.html#genRandomId">genRandomId</a></li><li><a href="global.html#genRandomNum">genRandomNum</a></li><li><a href="global.html#genRandomString">genRandomString</a></li><li><a href="global.html#genStarScore">genStarScore</a></li><li><a href="global.html#genTimeStamp">genTimeStamp</a></li><li><a href="global.html#getBrowserName">getBrowserName</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#getCurrentPath">getCurrentPath</a></li><li><a href="global.html#getDateDiff">getDateDiff</a></li><li><a href="global.html#getDevice">getDevice</a></li><li><a href="global.html#getInputIndex">getInputIndex</a></li><li><a href="global.html#getJsDir">getJsDir</a></li><li><a href="global.html#getLocation">getLocation</a></li><li><a href="global.html#getNetType">getNetType</a></li><li><a href="global.html#getPageHeight">getPageHeight</a></li><li><a href="global.html#getPageViewWidth">getPageViewWidth</a></li><li><a href="global.html#getPageWidth">getPageWidth</a></li><li><a href="global.html#getRandomItem">getRandomItem</a></li><li><a href="global.html#getRequestParams">getRequestParams</a></li><li><a href="global.html#getRoundNum">getRoundNum</a></li><li><a href="global.html#getSearchParams">getSearchParams</a></li><li><a href="global.html#getStringLength">getStringLength</a></li><li><a href="global.html#getSystem">getSystem</a></li><li><a href="global.html#getType">getType</a></li><li><a href="global.html#getUrlState">getUrlState</a></li><li><a href="global.html#hexMd5">hexMd5</a></li><li><a href="global.html#hexToRgba">hexToRgba</a></li><li><a href="global.html#initRequestAnimationFrame">initRequestAnimationFrame</a></li><li><a href="global.html#isContains">isContains</a></li><li><a href="global.html#isDigit">isDigit</a></li><li><a href="global.html#isEndsWith">isEndsWith</a></li><li><a href="global.html#isStartsWith">isStartsWith</a></li><li><a href="global.html#loadScript">loadScript</a></li><li><a href="global.html#loadStyle">loadStyle</a></li><li><a href="global.html#localStorageTest">localStorageTest</a></li><li><a href="global.html#move">move</a></li><li><a href="global.html#numberUpperFormat">numberUpperFormat</a></li><li><a href="global.html#numOfComma">numOfComma</a></li><li><a href="global.html#numOfComma2">numOfComma2</a></li><li><a href="global.html#objToQuery">objToQuery</a></li><li><a href="global.html#pad">pad</a></li><li><a href="global.html#pseudoHack">pseudoHack</a></li><li><a href="global.html#regularExpressionTest">regularExpressionTest</a></li><li><a href="global.html#remInit">remInit</a></li><li><a href="global.html#repeat">repeat</a></li><li><a href="global.html#replaceAll">replaceAll</a></li><li><a href="global.html#reverse">reverse</a></li><li><a href="global.html#sessionStorageTest">sessionStorageTest</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#showDomOutline">showDomOutline</a></li><li><a href="global.html#stringToDate">stringToDate</a></li><li><a href="global.html#stripHTMLTags">stripHTMLTags</a></li><li><a href="global.html#stripScripts">stripScripts</a></li><li><a href="global.html#SVGTest">SVGTest</a></li><li><a href="global.html#throttle">throttle</a></li><li><a href="global.html#timeAgo">timeAgo</a></li><li><a href="global.html#toAscii">toAscii</a></li><li><a href="global.html#toHump">toHump</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#truncate">truncate</a></li><li><a href="global.html#ucfirst">ucfirst</a></li><li><a href="global.html#webpAnimataionSupportDetect">webpAnimataionSupportDetect</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 13 2017 17:05:51 GMT+0800 (CST)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 14 2022 16:57:07 GMT+0800 (China Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

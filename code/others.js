@@ -3,6 +3,24 @@
  */
 
 /**
+ * [getSearchParams description] 获取URL的查询参数
+ * @return {Object}  查询参数对象
+ */
+function getSearchParams() {
+  return Object.fromEntries(new URLSearchParams(window.location.search));
+}
+
+
+/**
+ * [genStarScore description] 生成星级评分
+ * @param rate {Number} 评分数据，0.5为单位
+ * @return {String}  星级评分字符串
+ */
+function genStarScore(rate) {
+  return "★★★★★☆☆☆☆☆".slice(5 - rate, 10 - rate);
+}
+
+/**
  * [copyTextToClipboard description] 将文本复制到剪贴板，来自：https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
  * @param text {String}  需要复制的文本
  * @return {Null}  无返回

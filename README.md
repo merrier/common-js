@@ -29,3 +29,7 @@
 * [JS前端开发联盟群](https://github.com/jsfront/src/blob/master/js.md)
 * [Coco](https://github.com/chokcoco)
 * [xjinjin](http://xjinjin.net/)
+
+## 其他人的总结
+
+* [JavaScript 工具函数大全（新）](https://juejin.im/post/5da1a04ae51d45783d6122bf)

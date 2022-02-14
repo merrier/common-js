@@ -3,6 +3,27 @@
  Thanks：Coco
 */
 
+/**
+ * [getRoundNum description] 生成范围随机数
+ * @param min {Number}  最小值
+ * @param max {Number}  最大值
+ * @return {Number}  生成的随机数字
+ */
+function genRandomNum(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;;
+}
+
+
+/**
+ * [getRoundNum description] 精确到小数点后几位
+ * @param num {Number}  原数值
+ * @param decimal {Number}  精确到小数点后的位数
+ * @return {Number}  精确后的数字
+ */
+function getRoundNum(num, decimal) {
+  return Math.round(num * 10 ** decimal) / 10 ** decimal;
+}
+
 
 /**
  * [isDigit description] 判断是否为数字类型
@@ -41,6 +62,15 @@ function numOfComma(num) {
     }
   }
   return result;
+}
+
+/**
+ * [numOfComma2 description] 利用正则将数字转换为每3位添加一个逗号的格式（第2种实现方式）
+ * @param num {Number}   原数字
+ * @return {String}  转换后的"数字"
+ */
+function numOfComma2(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 

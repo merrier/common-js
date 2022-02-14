@@ -19,6 +19,15 @@
 
 
 /**
+ * [genRandomId description] 生成随机ID
+ * @param len {Number}  需要生成的ID的长度
+ * @return {String}  生成的随机字符串ID
+ */
+function genRandomId(len){
+  return Math.random().toString(36).substr(3, len);
+}
+
+/**
  * [getStringLength description] 求得计算机学上的字符串长度
  * @param str {String}  字符串
  * @param fix {Number}  修正，一个汉字占几个字节
